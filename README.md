@@ -1,10 +1,10 @@
-# ⚡ AI Intelligence Multi-Agent System
+# 👁️ Argus-AI — Multi-Agent Intelligence System
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
 [![Python 3.11+](https://img.shields.io/badge/python-3.11+-blue.svg)](https://www.python.org/downloads/)
 [![LangGraph](https://img.shields.io/badge/Orchestrator-LangGraph-orange.svg)](https://github.com/langchain-ai/langgraph)
 
-> Deterministik LangGraph tabanlı, her gün otomatik olarak RSS kaynaklarını ve ArXiv makalelerini toplayan, puanlayan, derinlemesine analiz eden ve GitHub Actions ile arşivleyen otonom yapay zeka istihbarat bülteni.
+> *Yunan mitolojisinde asla uyumayan ve her şeyi gören Argus'tan esinlenen; Deterministik LangGraph tabanlı, her gün otomatik olarak RSS kaynaklarını ve ArXiv makalelerini toplayan, puanlayan, derinlemesine analiz eden ve GitHub Actions ile arşivleyen otonom yapay zeka istihbarat gözcüsü.*
 
 ---
 
@@ -98,8 +98,8 @@ intelligence-agent/
 
 ### 1. Depoyu Klonlayın ve Sanal Ortam Oluşturun
 ```bash
-git clone <repo-url>
-cd "Haber Takip"
+git clone https://github.com/hamzamalikyildiz/Argus-AI.git
+cd Argus-AI
 
 python -m venv .venv
 # Windows:

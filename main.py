@@ -31,7 +31,7 @@ async def run_pipeline(date_str: str = None, lang: str = None):
     today = date_str or datetime.now(timezone.utc).strftime("%Y-%m-%d")
 
     print("\n" + "=" * 65)
-    print(" 🚀 AI INTELLIGENCE AGENT — DAILY BRIEF PIPELINE")
+    print(" 👁️ ARGUS-AI — MULTI-AGENT INTELLIGENCE PIPELINE")
     print(f" 📅 Date: {today}")
     print(f" 🧠 LLM Provider: {settings.llm_provider.upper()} (Curator: {settings.curator_model} | Analyst: {settings.analyst_model})")
     print(f" 🌐 Report Language: {settings.report_language.upper()}")
