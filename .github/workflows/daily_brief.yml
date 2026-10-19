@@ -1,0 +1,49 @@
+name: Daily AI Intelligence Brief
+
+on:
+  schedule:
+    # Runs daily at UTC 04:00 (07:00 AM Turkish Time / UTC+3)
+    - cron: '0 4 * * *'
+  workflow_dispatch: # Allows manual trigger from GitHub UI
+
+permissions:
+  contents: write
+
+jobs:
+  generate-brief:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Set up Python 3.11
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+          cache: 'pip'
+
+      - name: Install Dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+
+      - name: Run Daily Intelligence Pipeline
+        env:
+          LLM_PROVIDER: ${{ secrets.LLM_PROVIDER || 'gemini' }}
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+          CURATOR_MODEL: ${{ secrets.CURATOR_MODEL || 'gemini-2.0-flash' }}
+          ANALYST_MODEL: ${{ secrets.ANALYST_MODEL || 'gemini-2.0-pro' }}
+          REPORT_LANGUAGE: ${{ secrets.REPORT_LANGUAGE || 'tr' }}
+        run: |
+          python main.py
+
+      - name: Commit and Push Report
+        run: |
+          git config --local user.email "action@github.com"
+          git config --local user.name "AI Intelligence Bot"
+          git add reports/ README.md
+          git diff --quiet && git diff --staged --quiet || (git commit -m "chore(report): auto-generate brief for $(date +'%Y-%m-%d')" && git push)

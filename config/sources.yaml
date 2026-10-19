@@ -1,0 +1,29 @@
+rss_feeds:
+  - name: "Hacker News (AI/LLM)"
+    url: "https://hnrss.org/frontpage?q=AI+OR+LLM"
+    category: "Community & Releases"
+  - name: "TechCrunch AI"
+    url: "https://techcrunch.com/category/artificial-intelligence/feed/"
+    category: "Industry & Startup"
+  - name: "Ars Technica"
+    url: "https://feeds.arstechnica.com/arstechnica/technology-lab"
+    category: "Technology & Deep Dive"
+  - name: "Hugging Face Blog"
+    url: "https://huggingface.co/blog/feed.xml"
+    category: "Open Source & Tooling"
+  - name: "The Verge AI"
+    url: "https://www.theverge.com/rss/artificial-intelligence/index.xml"
+    category: "Industry & Policy"
+  - name: "MIT Technology Review AI"
+    url: "https://www.technologyreview.com/topic/artificial-intelligence/feed"
+    category: "Research & Analysis"
+
+arxiv:
+  categories:
+    - "cs.AI" # Artificial Intelligence
+    - "cs.LG" # Machine Learning
+    - "cs.CL" # Computation and Language (NLP)
+    - "cs.CV" # Computer Vision
+  max_results_per_category: 8
+  sort_by: "submittedDate"
+  sort_order: "descending"
