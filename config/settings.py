@@ -28,8 +28,8 @@ class Settings(BaseSettings):
     report_language: Literal["tr", "en"] = "tr"
 
     # Ingestion & Filtering
-    max_hours_old: int = 48
-    max_articles_per_source: int = 10
+    max_hours_old: int = 24
+    max_articles_per_source: int = 8
     min_relevance_score: int = 7
     max_curated_articles: int = 8
 
