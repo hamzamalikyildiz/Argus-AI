@@ -88,19 +88,35 @@ async def curate_articles(raw_articles: List[RawArticle]) -> List[CuratedArticle
             )
         )
 
-    # Filter by threshold (score >= min_relevance_score)
+    # Sort descending by relevance score
+    curated_list.sort(key=lambda x: x.relevance_score, reverse=True)
+
+    # Filter by primary threshold (score >= min_relevance_score)
     filtered = [
         item for item in curated_list
         if item.relevance_score >= settings.min_relevance_score
     ]
 
-    # Sort descending by relevance score
-    filtered.sort(key=lambda x: x.relevance_score, reverse=True)
+    # Smart Fallback: If no or fewer than 3 items meet the high threshold (e.g. on quiet news days or weekends),
+    # select the highest-scoring available articles (score >= 5 or top 3) so the brief is never empty.
+    if len(filtered) < 3 and curated_list:
+        fallback_candidates = [item for item in curated_list if item.relevance_score >= 5]
+        if not fallback_candidates:
+            fallback_candidates = curated_list[:3]
+
+        seen_ids = {item.raw.id for item in filtered}
+        for candidate in fallback_candidates:
+            if candidate.raw.id not in seen_ids and len(filtered) < 5:
+                filtered.append(candidate)
+                seen_ids.add(candidate.raw.id)
+
+        filtered.sort(key=lambda x: x.relevance_score, reverse=True)
+        logger.info(f"Curator smart fallback activated: Selected {len(filtered)} best available articles.")
 
     # Take top N
     top_curated = filtered[:settings.max_curated_articles]
     logger.info(
         f"Curation complete: {len(top_curated)} high-impact articles selected "
-        f"(threshold >= {settings.min_relevance_score})."
+        f"(threshold >= {settings.min_relevance_score} with smart fallback)."
     )
     return top_curated
