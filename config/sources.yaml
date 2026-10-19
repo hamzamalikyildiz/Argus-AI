@@ -29,9 +29,9 @@ rss_feeds:
   - name: "Webrazzi Yapay Zeka"
     url: "https://webrazzi.com/kategori/yapay-zeka/feed/"
     category: "Yerli Ekosistem & Girişim"
-  - name: "AI News"
-    url: "https://www.artificialintelligence-news.com/feed/"
-    category: "Ecosystem & Updates"
+  - name: "TechTalks AI"
+    url: "https://bdtechtalks.com/feed/"
+    category: "Research & Analysis"
 
 arxiv:
   categories:

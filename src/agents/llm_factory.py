@@ -29,9 +29,18 @@ def get_chat_model(role: str = "curator", temperature: float = 0.2) -> BaseChatM
             )
         
         model_name = settings.curator_model if role == "curator" else settings.analyst_model
-        # Default fallback for gemini if name isn't set
         if not model_name:
-            model_name = "gemini-2.0-flash" if role == "curator" else "gemini-2.0-pro"
+            model_name = "gemini-3.8-flash" if role == "curator" else "gemini-3.8-flash"
+
+        # Auto-map deprecated versions to active Google Gemini 3.8 models
+        model_mapping = {
+            "gemini-2.0-flash": "gemini-3.8-flash",
+            "gemini-1.5-flash": "gemini-3.8-flash",
+            "gemini-2.0-pro": "gemini-3.8-flash",
+            "gemini-1.5-pro": "gemini-3.8-flash",
+            "gemini-pro": "gemini-3.8-flash",
+        }
+        model_name = model_mapping.get(model_name.lower().strip(), model_name)
 
         logger.info(f"Initializing Gemini model '{model_name}' for role '{role}'")
         return ChatGoogleGenerativeAI(

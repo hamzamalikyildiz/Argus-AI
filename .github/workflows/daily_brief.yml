@@ -35,8 +35,8 @@ jobs:
           LLM_PROVIDER: ${{ secrets.LLM_PROVIDER || 'gemini' }}
           GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
           OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
-          CURATOR_MODEL: ${{ secrets.CURATOR_MODEL || 'gemini-2.0-flash' }}
-          ANALYST_MODEL: ${{ secrets.ANALYST_MODEL || 'gemini-2.0-pro' }}
+          CURATOR_MODEL: ${{ secrets.CURATOR_MODEL || 'gemini-3.8-flash' }}
+          ANALYST_MODEL: ${{ secrets.ANALYST_MODEL || 'gemini-3.8-flash' }}
           REPORT_LANGUAGE: ${{ secrets.REPORT_LANGUAGE || 'tr' }}
         run: |
           python main.py
