@@ -1,5 +1,9 @@
 # ⚡ AI Intelligence Multi-Agent System
 
+[![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
+[![Python 3.11+](https://img.shields.io/badge/python-3.11+-blue.svg)](https://www.python.org/downloads/)
+[![LangGraph](https://img.shields.io/badge/Orchestrator-LangGraph-orange.svg)](https://github.com/langchain-ai/langgraph)
+
 > Deterministik LangGraph tabanlı, her gün otomatik olarak RSS kaynaklarını ve ArXiv makalelerini toplayan, puanlayan, derinlemesine analiz eden ve GitHub Actions ile arşivleyen otonom yapay zeka istihbarat bülteni.
 
 ---
@@ -150,3 +154,9 @@ python main.py --date 2026-10-19 --lang tr
 2. `GEMINI_API_KEY` (veya `OPENAI_API_KEY`) anahtarınızı `Repository secret` olarak ekleyin.
 3. **Settings > Actions > General > Workflow permissions** sekmesinden **"Read and write permissions"** seçeneğini etkinleştirin.
 4. Sistem her sabah TSİ 07:00'de otomatik olarak raporu derleyip depoya push edecektir!
+
+---
+
+## 📄 Lisans
+
+Bu proje [MIT Lisansı](LICENSE) kapsamında lisanslanmıştır. Detaylar için [LICENSE](LICENSE) dosyasına göz atabilirsiniz.
