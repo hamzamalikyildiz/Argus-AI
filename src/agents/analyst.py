@@ -41,13 +41,15 @@ async def analyze_single_article(curated: CuratedArticle, analyst_chain) -> Anal
     url = raw.url
     logger.info(f"Analyzing article: '{raw.title}' from {url}")
 
-    # Proactively scrape web content to prevent hallucinations
+    # Proactively scrape web content to prevent hallucinations (bounded timeout)
     full_content = None
     try:
-        # Run synchronous web scraper in thread pool to keep event loop responsive
-        full_content = await asyncio.to_thread(extract_article_content, url)
+        full_content = await asyncio.wait_for(
+            asyncio.to_thread(extract_article_content, url),
+            timeout=10.0
+        )
     except Exception as e:
-        logger.warning(f"Could not scrape {url}: {e}")
+        logger.warning(f"Web scraper bypassed or timed out for {url}: {e}")
 
     content_to_analyze = full_content if full_content else raw.summary
     # Truncate content to avoid exceeding context window limits while preserving richness
@@ -57,13 +59,16 @@ async def analyze_single_article(curated: CuratedArticle, analyst_chain) -> Anal
     lang_inst = LANGUAGE_INSTRUCTIONS.get(lang, LANGUAGE_INSTRUCTIONS["tr"])
 
     try:
-        output: ArticleAnalysisOutput = await analyst_chain.ainvoke({
-            "language_instruction": lang_inst,
-            "article_title": raw.title,
-            "source_name": raw.source,
-            "article_category": curated.category,
-            "article_content": content_to_analyze
-        })
+        output: ArticleAnalysisOutput = await asyncio.wait_for(
+            analyst_chain.ainvoke({
+                "language_instruction": lang_inst,
+                "article_title": raw.title,
+                "source_name": raw.source,
+                "article_category": curated.category,
+                "article_content": content_to_analyze
+            }),
+            timeout=30.0
+        )
 
         return AnalyzedArticle(
             title=output.title or raw.title,
