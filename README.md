@@ -141,6 +141,7 @@ python main.py --date 2026-10-19 --lang tr
 <!-- RECENT_REPORTS_START -->
 | Tarih | Başlık / Odak Noktası | Rapor Linki |
 |:---:|:---|:---:|
+| 2026-10-20 | MiniMax Just Launched M3.1 Flash, [ArXiv] WeAct | [Raporu Oku](reports/2026/10/2026-10-20-daily-brief.md) |
 | 2026-10-19 | MiniMax Just Launched M3.1 Flash, NVIDIA Open Sources Run | [Raporu Oku](reports/2026/10/2026-10-19-daily-brief.md) |
 
 [Tüm Arşivi Gör (reports/INDEX.md)](reports/INDEX.md)
