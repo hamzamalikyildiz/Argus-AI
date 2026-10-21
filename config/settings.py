@@ -21,8 +21,8 @@ class Settings(BaseSettings):
     gemini_api_key: str = ""
     openai_api_key: str = ""
     
-    curator_model: str = "gemini-3.8-flash"
-    analyst_model: str = "gemini-3.8-flash"
+    curator_model: str = "gemini-2.0-flash"
+    analyst_model: str = "gemini-2.0-flash"
 
     # Localization
     report_language: Literal["tr", "en"] = "tr"

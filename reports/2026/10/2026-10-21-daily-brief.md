@@ -3,22 +3,24 @@
 > 📅 **Tarih:** 2026-10-21 | 🌐 **Dil:** Türkçe | ⚡ **Durum:** Otomatik Raporlandı
 
 ## ⚡ Yönetici Özeti (TL;DR)
-- **Mistral AI Releases Voxtral 3: Speech-to-Text, TTS and a Voice Agent SDK**: Mistral AI released Voxtral 3, a family of 3 transcription models, 1 text-to-speech model and a LiveKit-based voice agent SDK. Voxtral Small Transcribe 3 scores 2.1% AA-WER, ranking #3 on Artificial A
-- **Google Cloud Ships llm-d 1.0 With Cache-Aware Routing for TPU and GPU Fleets**: Google, Red Hat and IBM released llm-d 1.0, an open-source Kubernetes-native stack for distributed LLM inference. It adds multi-tenant flow control, zero-downtime upgrades and agent-aware routing acro
-- **Google Open-Sources TorchTPU, a Native PyTorch Backend for Cloud TPUs**: Google and Meta open-sourced TorchTPU, a native PyTorch backend for Cloud TPUs. It runs eager by default, compiles through torch.compile and XLA, and replaces PyTorch/XLA for new workloads. The post G
+* **Mistral AI Voxtral 3 ile Sesli Ajan Ekosistemine Giriş Yaptı:** Mistral AI; 3 transkripsiyon modeli, 1 metinden sese (TTS) modeli ve LiveKit tabanlı gerçek zamanlı sesli ajan SDK'sından oluşan Voxtral 3 ailesini duyurdu. Voxtral Small Transcribe 3 modeli %2,1 AA-WER skoru ile küresel liderlik tablosunda ilk 3'e girerek açık kaynak sesli yapay zeka standartlarını yukarı taşıyor.
+* **Google Cloud ve Ortaklarından Dağıtık Çıkarım Yığını (llm-d 1.0):** Google, Red Hat ve IBM; TPU ve GPU filolarında önbellek duyarlı yönlendirme (cache-aware routing) ve çok kiracılı akış kontrolü sunan Kubernetes tabanlı açık kaynak çıkarım motoru llm-d 1.0'ı yayınladı. Bu mimari, vLLM ve SGLang gibi popüler motorlar üzerinde sıfır kesintili model güncellemelerini mümkün kılıyor.
+* **Bulut TPU'lar İçin Yerel PyTorch Hamlesi (TorchTPU):** Google ve Meta, Cloud TPU çipleri için doğrudan torch.compile ve XLA ile entegre çalışan yerel PyTorch backend'i TorchTPU'yu açık kaynak yaptı. Eski PyTorch/XLA katmanının yerini alan bu çözüm, GPU darboğazlarına karşı TPU geçişlerini radikal biçimde kolaylaştırıyor.
 
 ---
 
 ## 🔬 Araştırma ve Çığır Açan Gelişmeler (Research & Breakthroughs)
 ### [[ArXiv] Large Flow Language Models](http://arxiv.org/abs/2610.28559v1)
 **Öne Çıkanlar:**
-  - Continuous flow language models offer a path to parallel generation with tools for control and acceleration unavailable to discrete diffusion, yet effective techniques for building them at the billion
+  - Sürekli akış dil modelleri (continuous flow models), ayrık difüzyonun sağlayamadığı paralel üretim ve hızlanma imkanlarını milyar parametre ölçeğine taşıyor.
+  - 8B parametreli Lafa modeli, ön ek (prefix) üzerinde nedensel dikkat ve blok içinde çift yönlü asenkron akış kullanarak otoregresif modellerin çıkarım kalitesini yakalıyor.
+  - Öz-tahminli (self-speculative) kod çözme yaklaşımı sayesinde benzer kalitedeki otoregresif modellere göre 2,54 kat işlem hacmi (throughput) artışı elde ediliyor.
 
 **Teknik Derinlik & Mimari:**
-Continuous flow language models offer a path to parallel generation with tools for control and acceleration unavailable to discrete diffusion, yet effective techniques for building them at the billion-parameter scale remain less established. We present Lafa (Large flow language model), a fast, high-performing flow language model scaled to 8B parameters in a data-efficient manner. Lafa is a blockwise flow model with causal attention on the prefix and bidirectional, asynchronous flow within each block. This design enables efficient training by adapting pretrained autoregressive (AR) models and fast inference via prefix caching and blockwise parallel decoding. We train Lafa at 0.5B, 7B, and 8B scales with fewer than 30B tokens, more efficient than previous diffusion models, and evaluate it on instruction following, reasoning, and coding, where the learned flow matches or surpasses the quality of AR and can be distilled into flow maps for one- and few-step generation. Notably, flow training preserves or even improves pretrained AR capabilities via a multi-token prediction effect, which we leverage in a self-speculative decoding scheme that verifies flow-based drafts autoregressively within a single model. This yields 2.54x the throughput of an AR model at comparable quality, outperforming multi-token prediction and discrete diffusion methods. Our findings show that continuous flows can serve as a scalable foundation for language modeling.
+Araştırmacılar, 30 milyar token'dan daha az bir veriyle eğitilen ve blok bazlı akış mimarisine sahip Lafa modelini tanıttı. Model, eğitilmiş otoregresif ağırlıkları adapte ederek önbelleklemeyi ve paralel kod çözmeyi birleştiriyor. Çoklu token tahmini etkisi sayesinde model kalitesi korunurken, tek adımlı üretim haritaları çıkarım verimliliğinde yeni bir dönüm noktası oluşturuyor.
 
 **Sektörel Etki & Anlamı:**
-Research kategorisinde önemli bir gelişme.
+Geleneksel otoregresif mimarilerin yüksek gecikme sürelerine karşı difüzyon ve akış modellerinin üretim sistemlerinde doğrudan alternatif olabileceğini kanıtlamaktadır.
 
 📎 *Kaynak Bağlantısı:* [http://arxiv.org/abs/2610.28559v1](http://arxiv.org/abs/2610.28559v1)
 
@@ -26,13 +28,15 @@ Research kategorisinde önemli bir gelişme.
 
 ### [[ArXiv] Capable Teacher, Myopic Scorer: Reward-Free Teacher Repair for Agentic On-Policy Distillation](http://arxiv.org/abs/2610.28586v1)
 **Öne Çıkanlar:**
-  - Agentic on-policy distillation (OPD) trains a student agent on its own trajectories while a teacher scores every token. A natural explanation of where it goes wrong is compounding error: the student's
+  - Ajan tabanlı on-policy model damıtma (OPD) süreçlerinde öğretmen modelin sonraki token'a odaklanan miyop değerlendirmesi analiz edildi.
+  - Öğretmenin adım bazlı puanlaması ile görevi tamamlama başarısı arasındaki boşluğu kapatmak için Rollout-to-Scorer Distillation (R2S) geliştirildi.
+  - Dışsal pekiştirmeli öğrenme ödülü gerektirmeden, öğretmenin karar anlarındaki uzlaşma noktaları fine-tune edilerek öğrenci ajanın adım tükenme hatası engellendi.
 
 **Teknik Derinlik & Mimari:**
-Agentic on-policy distillation (OPD) trains a student agent on its own trajectories while a teacher scores every token. A natural explanation of where it goes wrong is compounding error: the student's mistakes carry its trajectories beyond the region where the teacher is reliable, so recent methods keep training inside that region, through episode-length curricula, teacher-guided turns, prefix replay, or teacher intervention where the two disagree. We show this explanation is incomplete. From the states where the student departs most from the teacher, the teacher's own takeovers still finish the task, yet the student trained on its token scores keeps running out of turns. We attribute this to the myopia of next-token scoring. The teacher rates each token without seeing where the episode ends, so its scores let through the safe, delaying moves that outcome-based RL would punish with zero reward, a penalty agentic OPD lacks. We call this difference between what the teacher does and what it scores the rollout-scorer gap. We propose Rollout-to-Scorer Distillation (R2S), which repairs the scorer before distillation by mining high-disagreement states from the untrained student, running teacher takeovers from them, keeping the states where enough takeovers pass a reward-free check such as consensus or an LLM judge, and fine-tuning the teacher to give its takeover-informed scores on every assistant token from the divergence turn onward, without the takeover in context. The repaired t
+Çalışma, öğrenci modelin yörüngeden saptığı durumlarda öğretmenin sonraki token bazlı puanlarının geciktirici ve etkisiz adımlara yüksek puan verdiğini ortaya koymaktadır. R2S yöntemi, yüksek uyumsuzluk içeren durumları tespit ederek öğretmenin görevi devraldığı yörüngeler üzerinden skorlayıcıyı yeniden kalibre etmekte ve ödül fonksiyonu olmaksızın model damıtma kalitesini artırmaktadır.
 
 **Sektörel Etki & Anlamı:**
-Research kategorisinde önemli bir gelişme.
+Otonom ajanların küçük modellere damıtılmasında (distillation) karşılaşılan kümülatif hata problemini çözerek kurumsal ajan sistemlerinin güvenilirliğini artırmaktadır.
 
 📎 *Kaynak Bağlantısı:* [http://arxiv.org/abs/2610.28586v1](http://arxiv.org/abs/2610.28586v1)
 
@@ -40,88 +44,96 @@ Research kategorisinde önemli bir gelişme.
 
 ### [[ArXiv] Cache Engineering for Agents](http://arxiv.org/abs/2610.28577v1)
 **Öne Çıkanlar:**
-  - Large Language Model (LLM) agents can handle increasingly complex tasks, navigating long trajectories of observations and actions. As these trajectories grow, key-value (KV) cache I/O and storage beco
+  - Uzun vadeli ajan yörüngelerinde KV-cache I/O ve bellek yükü çıkarım maliyetlerinin en büyük kalemini oluşturmaktadır.
+  - Geleneksel geçmiş kırpma yöntemlerinin önbellek geçersiz kılma (cache invalidation) sorununu aşmak için "Cache Engineering" paradigması önerildi.
+  - Ajanların KV önbelleğini geçmişi değiştirmeden doğrudan yönetmesini sağlayan durumsuz AKV sunum motoru geliştirildi.
 
 **Teknik Derinlik & Mimari:**
-Large Language Model (LLM) agents can handle increasingly complex tasks, navigating long trajectories of observations and actions. As these trajectories grow, key-value (KV) cache I/O and storage become the dominant cost. Trajectories can also exceed the LLM's maximum context length, requiring control over active cache growth. Prior work uses context engineering to reduce cache size by trimming or summarizing history. However, modifying the trajectory prefix invalidates subsequent cached states and triggers costly re-prefilling of retained context. Task accuracy can also suffer when too little context is retained to limit re-prefill costs. We propose cache engineering as a new scheme. It allows agents to directly control their active KV cache without modifying the trajectory or re-prefilling retained context. Specifically, agents can proactively use drop to exclude selected cache from future attention and repos to adjust retained keys' position encodings. We formalize these cache operations and identify history dependence as a serving challenge: identical token sequences can yield different cache states under different cache operation sequences, making prefix matching insufficient for correct cache reuse. Thus, we co-design the AKV serving engine. It provides a stateless interface compatible with existing serving APIs, while internally managing stateful cache reuse, eviction, and restoration. Experiments show that a tool-response rolling-drop cache policy improves average ben
+Ajanlar, gelecekteki dikkat hesaplamalarından belirli önbellekleri hariç tutmak için `drop` ve pozisyon kodlamalarını ayarlamak için `repos` işlemlerini kullanmaktadır. AKV motoru, mevcut sunucu API'leriyle uyumlu kalarak durum bağımlı önbellek yeniden kullanımını, tahliyesini ve geri yüklemesini arka planda koordine etmekte; rolling-drop politikası ile bellek tüketimini ciddi oranda düşürmektedir.
 
 **Sektörel Etki & Anlamı:**
-Research kategorisinde önemli bir gelişme.
+Çok adımlı araç kullanan otonom ajanların bağlam penceresi aşımını ve bellek maliyetlerini en aza indirerek üretim seviyesinde sürdürülebilirliği destekler.
 
 📎 *Kaynak Bağlantısı:* [http://arxiv.org/abs/2610.28577v1](http://arxiv.org/abs/2610.28577v1)
 
+---
+
+### [ALTK-Evolve: Öğrenilmiş Bellek ile Sınır Modeller Olmaksızın Liderlik Tablosu Zirvesi](https://huggingface.co/blog/ibm-research/altk-evolve-bc)
+**Öne Çıkanlar:**
+  - IBM Research, müşteri hizmetleri alanında kullanılan τ²-bench testinde öncü sınır modeller kullanmadan zirveye oturan ALTK-Evolve yöntemini duyurdu.
+  - Öğrenilmiş dinamik bellek modülleri, model parametrelerini büyütmeden karmaşık diyalog ve iş akışlarında yüksek başarı sağladı.
+
+**Teknik Derinlik & Mimari:**
+Sistem, müşteri etkileşimleri sırasında kritik durum bilgilerini yapılandırılmış bellek vektörlerine aktarmakta ve çıkarım anında yalnızca ilgili bağlamı dinamik olarak enjekte etmektedir. Böylece küçük ölçekli modeller, çok daha yüksek parametreli modellerin başarımını yakalamaktadır.
+
+**Sektörel Etki & Anlamı:**
+Müşteri hizmetleri ve diyalog yapay zekasında büyük modellerin yüksek API maliyetlerine karşı küçük modellerle sınır-seviye performans elde edilebileceğini göstermektedir.
+
+📎 *Kaynak Bağlantısı:* [https://huggingface.co/blog/ibm-research/altk-evolve-bc](https://huggingface.co/blog/ibm-research/altk-evolve-bc)
 
 ---
 
 ## 🛠️ Araçlar, Modeller ve Açık Kaynak (Tooling, Frameworks & Releases)
 ### [Mistral AI Releases Voxtral 3: Speech-to-Text, TTS and a Voice Agent SDK](https://www.marktechpost.com/2026/10/20/mistral-voxtral-3-speech-models-voice-agent-sdk/)
 **Öne Çıkanlar:**
-  - Mistral AI released Voxtral 3, a family of 3 transcription models, 1 text-to-speech model and a LiveKit-based voice agent SDK. Voxtral Small Transcribe 3 scores 2.1% AA-WER, ranking #3 on Artificial A
+  - Mistral AI; transkripsiyon, ses üretimi ve gerçek zamanlı sesli ajanlar için entegre Voxtral 3 ailesini kullanıma sundu.
+  - Voxtral Small Transcribe 3 modeli %2,1 AA-WER hata oranı elde ederek en iyi ticari alternatiflerle doğrudan rekabet ediyor.
+  - LiveKit entegrasyonu ile geliştiricilere ultra düşük gecikmeli çift yönlü sesli ajan geliştirme imkanı sunuluyor.
 
 **Teknik Derinlik & Mimari:**
-Mistral AI released Voxtral 3, a family of 3 transcription models, 1 text-to-speech model and a LiveKit-based voice agent SDK. Voxtral Small Transcribe 3 scores 2.1% AA-WER, ranking #3 on Artificial Analysis. The post Mistral AI Releases Voxtral 3: Speech-to-Text, TTS and a Voice Agent SDK appeared first on MarkTechPost .
+Model ailesi, çok dilli transkripsiyon için optimize edilmiş akustik kodlayıcılar ve yüksek kaliteli ses sentezi motorunu bir araya getiriyor. WebRTC tabanlı LiveKit altyapısı sayesinde akış halindeki ses paketleri milisaniyeler seviyesinde işlenmektedir.
 
 **Sektörel Etki & Anlamı:**
-LLM Release kategorisinde önemli bir gelişme.
+Açık kaynak dünyasında OpenAI ve ElevenLabs benzeri uçtan uca sesli asistan mimarilerinin kurulumunu hızlandırmaktadır.
 
 📎 *Kaynak Bağlantısı:* [https://www.marktechpost.com/2026/10/20/mistral-voxtral-3-speech-models-voice-agent-sdk/](https://www.marktechpost.com/2026/10/20/mistral-voxtral-3-speech-models-voice-agent-sdk/)
 
 ---
 
-### [Google Cloud Ships llm-d 1.0 With Cache-Aware Routing for TPU and GPU Fleets](https://www.marktechpost.com/2026/10/20/llm-d-1-0-open-source-distributed-inference-stack/)
+### [Google Cloud Ships llm-d 1.0: TPU ve GPU Filoları İçin Önbellek Duyarlı Yönlendirme](https://www.marktechpost.com/2026/10/20/llm-d-1-0-open-source-distributed-inference-stack/)
 **Öne Çıkanlar:**
-  - Google, Red Hat and IBM released llm-d 1.0, an open-source Kubernetes-native stack for distributed LLM inference. It adds multi-tenant flow control, zero-downtime upgrades and agent-aware routing acro
+  - Google, Red Hat ve IBM ortaklığıyla Kubernetes ortamlarında çalışan dağıtık LLM çıkarım yığını llm-d 1.0 yayınlandı.
+  - Gelen istekleri TPU ve GPU kümesindeki mevcut KV önbellek durumuna göre yönlendirerek ön-doldurma (pre-fill) gecikmesini minimize ediyor.
+  - Çok kiracılı akış kontrolü ve sıfır kesinti süreli model sürüm geçişleri sağlandı.
 
 **Teknik Derinlik & Mimari:**
-Google, Red Hat and IBM released llm-d 1.0, an open-source Kubernetes-native stack for distributed LLM inference. It adds multi-tenant flow control, zero-downtime upgrades and agent-aware routing across vLLM, SGLang, TPUs and GPUs. The post Google Cloud Ships llm-d 1.0 With Cache-Aware Routing for TPU and GPU Fleets appeared first on MarkTechPost .
+llm-d, vLLM ve SGLang gibi çıkarım motorlarının önüne bir Kubernetes Ingress ve akıllı yönlendirici katmanı olarak yerleşmektedir. Önbellek parçalarını takip eden dağıtık hash tabloları sayesinde aynı bağlama sahip istekler önbelleğin sıcak olduğu hızlandırıcılara yönlendirilir.
 
 **Sektörel Etki & Anlamı:**
-Tooling kategorisinde önemli bir gelişme.
+Büyük ölçekli kurumsal çıkarım altyapılarında hesaplama verimliliğini artırarak donanım maliyetlerini %30'a varan oranda düşürmeyi hedeflemektedir.
 
 📎 *Kaynak Bağlantısı:* [https://www.marktechpost.com/2026/10/20/llm-d-1-0-open-source-distributed-inference-stack/](https://www.marktechpost.com/2026/10/20/llm-d-1-0-open-source-distributed-inference-stack/)
 
 ---
 
-### [Google Open-Sources TorchTPU, a Native PyTorch Backend for Cloud TPUs](https://www.marktechpost.com/2026/10/20/google-torchtpu-open-source-native-pytorch-tpu/)
+### [Google Open-Sources TorchTPU: Cloud TPU'lar İçin Yerel PyTorch Backend'i](https://www.marktechpost.com/2026/10/20/google-torchtpu-open-source-native-pytorch-tpu/)
 **Öne Çıkanlar:**
-  - Google and Meta open-sourced TorchTPU, a native PyTorch backend for Cloud TPUs. It runs eager by default, compiles through torch.compile and XLA, and replaces PyTorch/XLA for new workloads. The post G
+  - Google ve Meta, Cloud TPU'lar için PyTorch/XLA katmanının yerini alacak olan TorchTPU'yu açık kaynak yaptı.
+  - Varsayılan olarak eager modda çalışan araç, torch.compile ile tam uyumlu derleme gerçekleştirmektedir.
+  - PyTorch geliştiricilerinin GPU için yazdıkları kodları sıfır kod değişikliğiyle TPU üzerinde çalıştırmasına olanak tanır.
 
 **Teknik Derinlik & Mimari:**
-Google and Meta open-sourced TorchTPU, a native PyTorch backend for Cloud TPUs. It runs eager by default, compiles through torch.compile and XLA, and replaces PyTorch/XLA for new workloads. The post Google Open-Sources TorchTPU, a Native PyTorch Backend for Cloud TPUs appeared first on MarkTechPost .
+TorchTPU, PyTorch C++ çekirdeğine doğrudan bağlanarak tensör operasyonlarını XLA derleyicisine iletmektedir. Bu sayede eski wrapper mimarisinin getirdiği bellek ve çağrı ek yükleri ortadan kaldırılmıştır.
 
 **Sektörel Etki & Anlamı:**
-Tooling kategorisinde önemli bir gelişme.
+Nvidia CUDA ekosistemine bağımlı geliştiricilerin Google TPU donanımlarına geçiş bariyerini neredeyse tamamen ortadan kaldırmaktadır.
 
 📎 *Kaynak Bağlantısı:* [https://www.marktechpost.com/2026/10/20/google-torchtpu-open-source-native-pytorch-tpu/](https://www.marktechpost.com/2026/10/20/google-torchtpu-open-source-native-pytorch-tpu/)
 
 ---
 
-### [DeepSeek Open-Sources DeepInfer, the Inference Framework Behind DeepSeek-V4.1-Flash](https://www.marktechpost.com/2026/10/20/deepseek-deepinfer-open-source-inference-framework/)
+### [DeepSeek Open-Sources DeepInfer: DeepSeek-V4.1-Flash Modelinin Çıkarım Motoru](https://www.marktechpost.com/2026/10/20/deepseek-deepinfer-open-source-inference-framework/)
 **Öne Çıkanlar:**
-  - DeepSeek has open-sourced DeepInfer, the Apache 2.0 inference framework that serves DeepSeek-V4.1-Flash in production. It targets NVIDIA SM100 GPUs and Huawei Ascend 950 NPUs, and ships offline infere
+  - DeepSeek, üretimde DeepSeek-V4.1-Flash modeline güç veren DeepInfer çerçevesini Apache 2.0 lisansıyla yayınladı.
+  - NVIDIA SM100 mimarisi ve Huawei Ascend 950 NPU donanımları için optimize edilmiş düşük gecikmeli çıkarım desteği sunuyor.
 
 **Teknik Derinlik & Mimari:**
-DeepSeek has open-sourced DeepInfer, the Apache 2.0 inference framework that serves DeepSeek-V4.1-Flash in production. It targets NVIDIA SM100 GPUs and Huawei Ascend 950 NPUs, and ships offline inference only. The post DeepSeek Open-Sources DeepInfer, the Inference Framework Behind DeepSeek-V4.1-Flash appeared first on MarkTechPost .
+Çerçeve, MoE (Mixture of Experts) mimarilerinde uzman yönlendirmesini çekirdek seviyesinde paralelleştirmekte ve FP8/FP4 kuantizasyon desteği ile bellek bant genişliğini maksimize etmektedir.
 
 **Sektörel Etki & Anlamı:**
-Tooling kategorisinde önemli bir gelişme.
+Yüksek hacimli MoE modellerinin açık kaynak motorlarla ultra verimli şekilde çalıştırılabileceğini kanıtlamaktadır.
 
 📎 *Kaynak Bağlantısı:* [https://www.marktechpost.com/2026/10/20/deepseek-deepinfer-open-source-inference-framework/](https://www.marktechpost.com/2026/10/20/deepseek-deepinfer-open-source-inference-framework/)
-
----
-
-### [ALTK-Evolve: How learned memory tops the τ²-bench leaderboard on customer service tasks without a frontier model](https://huggingface.co/blog/ibm-research/altk-evolve-bc)
-**Öne Çıkanlar:**
-  - ALTK-Evolve: How learned memory tops the τ²-bench leaderboard on customer service tasks without a frontier model
-
-**Teknik Derinlik & Mimari:**
-ALTK-Evolve: How learned memory tops the τ²-bench leaderboard on customer service tasks without a frontier model
-
-**Sektörel Etki & Anlamı:**
-Research kategorisinde önemli bir gelişme.
-
-📎 *Kaynak Bağlantısı:* [https://huggingface.co/blog/ibm-research/altk-evolve-bc](https://huggingface.co/blog/ibm-research/altk-evolve-bc)
-
 
 ---
 

@@ -13,11 +13,13 @@ logger = logging.getLogger(__name__)
 REPORTER_SYSTEM_PROMPT = """You are an Executive Editor for a top-tier Artificial Intelligence intelligence brief.
 Your task is to take analyzed technical articles and synthesize the "Executive Summary (TL;DR)" section.
 
-Requirements:
+CRITICAL REQUIREMENTS:
 1. Provide the TOP 3 most impactful takeaways of the entire day in concise, punchy bullet points.
 2. Emphasize why engineers and leaders should care (implications for infrastructure, open-weights, and compute).
 3. Do NOT invent new facts or external URLs.
-4. Language: Write strictly in {language_name} ({language_code}).
+4. MANDATORY TARGET LANGUAGE: Write STRICTLY and EXCLUSIVELY in {language_name} ({language_code}).
+   - Even if the input article titles, summaries, or takeaways are in English, you MUST translate and write every single sentence in {language_name}!
+   - Do NOT produce English bullet points when {language_name} is requested.
 """
 
 import ast

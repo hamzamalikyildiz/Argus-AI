@@ -110,6 +110,31 @@ def check_links_and_tables(markdown_content: str) -> List[str]:
 
     return link_issues
 
+def check_language_consistency(markdown_content: str) -> List[str]:
+    """Checks whether the report body matches the declared language in badge or settings."""
+    issues = []
+    is_tr_declared = "Dil:** Türkçe" in markdown_content or settings.report_language == "tr"
+
+    if is_tr_declared:
+        # Check TL;DR section for untranslated English text
+        tldr_match = re.search(
+            r"##\s*⚡\s*.*?(TL;DR|Yönetici Özeti)[^\n]*\n(.*?)(?:\n---|\n##)",
+            markdown_content,
+            flags=re.DOTALL
+        )
+        if tldr_match:
+            tldr_text = tldr_match.group(2).strip()
+            english_markers = [
+                "The post", "appeared first on", "scores ", "Speech-to-Text",
+                "ranking #", "released ", "is taking its biggest", "has open-sourced"
+            ]
+            has_english_markers = sum(1 for m in english_markers if m.lower() in tldr_text.lower())
+            has_turkish_chars = any(c in tldr_text for c in "çğıöşüÇĞİÖŞÜ")
+            if has_english_markers >= 2 and not has_turkish_chars:
+                issues.append("Language inconsistency: Report is set to Turkish but Executive Summary contains untranslated English text")
+
+    return issues
+
 def audit_report_content(report_md: str, auto_heal: bool = True) -> AuditResult:
     """
     Core auditing routine. Inspects markdown content, applies auto-heals if requested,
@@ -118,8 +143,9 @@ def audit_report_content(report_md: str, auto_heal: bool = True) -> AuditResult:
     cleaned_md, leak_issues, fixes = check_leaks_and_auto_heal(report_md)
     structure_issues = check_markdown_structure(cleaned_md)
     link_issues = check_links_and_tables(cleaned_md)
+    language_issues = check_language_consistency(cleaned_md)
 
-    all_issues = leak_issues + structure_issues + link_issues
+    all_issues = leak_issues + structure_issues + link_issues + language_issues
 
     # If auto-heal was turned off, revert cleaned_md
     final_md = cleaned_md if auto_heal else report_md
