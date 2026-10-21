@@ -58,11 +58,14 @@ async def run_pipeline(date_str: str = None, lang: str = None):
         issues = final_state.get("audit_issues", [])
         fixes = final_state.get("audit_fixes", [])
         
+        telegram_sent = final_state.get("telegram_broadcast_sent", False)
+        
         print("\n" + "=" * 65)
         print(" ✅ PIPELINE COMPLETED SUCCESSFULLY")
         print(f" 📄 Generated Report: {report_path}")
         print(f" 📊 Raw: {len(final_state.get('raw_articles', []))} | Curated: {len(final_state.get('curated_articles', []))} | Analyzed: {len(final_state.get('analyzed_articles', []))}")
         print(f" 🛡️ Auditor Gate: {'PASSED ✅' if audit_passed else 'WARNING ⚠️'} (Issues: {len(issues)} | Fixes: {len(fixes)})")
+        print(f" 📲 Telegram Broadcast: {'SENT ✅' if telegram_sent else 'SKIPPED (No token configured) ℹ️'}")
         print("=" * 65 + "\n")
         return final_state
     except Exception as e:

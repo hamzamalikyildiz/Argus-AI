@@ -52,6 +52,9 @@ jobs:
           CURATOR_MODEL: ${{ secrets.CURATOR_MODEL || 'gemini-2.0-flash' }}
           ANALYST_MODEL: ${{ secrets.ANALYST_MODEL || 'gemini-2.0-flash' }}
           REPORT_LANGUAGE: ${{ inputs.language || secrets.REPORT_LANGUAGE || 'tr' }}
+          TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+          TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
+          GITHUB_REPOSITORY: ${{ github.repository }}
         run: |
           python main.py ${{ inputs.date && format('--date {0}', inputs.date) || '' }} --lang ${{ inputs.language || secrets.REPORT_LANGUAGE || 'tr' }}
 

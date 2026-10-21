@@ -37,6 +37,10 @@
   [Depolama: reports/YYYY/MM/YYYY-MM-DD-daily-brief.md + README/INDEX.md Güncellemesi]
                        │
                        ▼
+            ┌──────────────────────┐
+            │ 6. Broadcaster Agent │ (Telegram Kanalı/Sohbetine Anlık Mobil Bülten & GitHub Linki)
+            └──────────┬───────────┘
+                       ▼
          [GitHub Actions Otomatik Git Commit & Push]
                        │
                        ▼
@@ -55,6 +59,7 @@
 - **Fail-Safe Veri Toplama**: RSS veya arXiv kaynaklarından biri erişilemez olduğunda pipeline çökmez; hata loglanır ve kalan kaynaklarla devam edilir.
 - **Dinamik Web Kazıma (Trafilatura)**: Önemli haberlerin sayfalarına bizzat gidilip tam metin/kod/benchmark bilgisi çekilir.
 - **Auditor & Quality Assurance Agent**: Rapor oluşturulduktan sonra ve GitHub'a gönderildikten sonra devreye girer; ham LLM yanıtlarını, şifreleme imzalarını, Markdown sözdizimini ve link bütünlüğünü denetler, olası format bozukluklarını otomatik olarak onarır (auto-heal).
+- **Broadcaster Agent (Telegram Yayını)**: Günlük rapor oluştuktan hemen sonra Yönetici Özeti (TL;DR) ve öne çıkan 5 haberi Telegram kanalınıza/grubunuza push bildirim olarak gönderir; GitHub'daki tam rapora doğrudan tıklanabilir bağlantı verir.
 - **Dil Seçeneği**: Türkçe (`tr`) veya İngilizce (`en`) olarak tek ayarla rapor üretimi.
 - **Otonom GitHub Actions**: Her sabah UTC 04:00 (TSİ 07:00) saatinde otomatik çalışır ve repo güncellenir.
 
@@ -158,12 +163,29 @@ python main.py --date 2026-10-19 --lang tr
 
 ---
 
-## 🤖 GitHub Actions ile Otomasyon Kurulumu
+## 🤖 GitHub Actions ile Otomasyon ve Telegram Kurulumu
 
-1. GitHub deponuzun **Settings > Secrets and variables > Actions** sayfasına gidin.
-2. `GEMINI_API_KEY` (veya `OPENAI_API_KEY`) anahtarınızı `Repository secret` olarak ekleyin.
-3. **Settings > Actions > General > Workflow permissions** sekmesinden **"Read and write permissions"** seçeneğini etkinleştirin.
-4. Sistem her sabah TSİ 07:00'de otomatik olarak raporu derleyip depoya push edecektir!
+Sistem her sabah **UTC 04:00 (TSİ 07:00)** saatinde GitHub Actions üzerinde otonom çalışır; raporu derler, denetler, depoya arşivler ve Telegram kanalınıza bülten özeti gönderir.
+
+### 1. GitHub Repository Secrets Ekleme
+GitHub deponuzda **Settings > Secrets and variables > Actions** sayfasına gidin ve aşağıdaki `Repository secrets` tanımlarını yapın:
+
+| Secret Adı | Zorunlu mu? | Açıklama |
+|:---|:---:|:---|
+| `GEMINI_API_KEY` | Evet* | Google Gemini API anahtarı (*OpenAI kullanıyorsanız `OPENAI_API_KEY`) |
+| `TELEGRAM_BOT_TOKEN` | Opsiyonel | `@BotFather` üzerinden aldığınız bot token'ı |
+| `TELEGRAM_CHAT_ID` | Opsiyonel | Mesajın gönderileceği kanal kullanıcı adı (örn: `@yapayzeka_bulteni`) veya Chat ID |
+| `USER_EMAIL` | Opsiyonel | Commit geçmişinizde yeşil karelerin (contributions) size yazılması için GitHub e-postanız |
+| `USER_NAME` | Opsiyonel | Commit atan kullanıcı adı (Varsayılan: `hamzamalikyildiz`) |
+
+### 2. Telegram Kanalı Hazırlama (3 Adım)
+1. Telegram'da **@BotFather** botuna gidip `/newbot` komutuyla bir bot oluşturun ve verilen `HTTP API Token`'ı `TELEGRAM_BOT_TOKEN` olarak GitHub Secrets'a ekleyin.
+2. Telegram'da yeni bir **Kanal** veya **Grup** açın.
+3. Botunuzu bu kanala/gruba **Yönetici (Admin)** olarak ekleyin ve "Mesaj Gönderme (Post Messages)" izni verin. Kanalınız genel ise `@kanal_adiniz`, gizli ise chat ID'sini `TELEGRAM_CHAT_ID` olarak ekleyin.
+
+### 3. Workflow İzinleri
+- GitHub deponuzda **Settings > Actions > General > Workflow permissions** sekmesine gidin.
+- **"Read and write permissions"** seçeneğini seçip kaydedin (Actions'ın raporları repo'ya commit edebilmesi için gereklidir).
 
 ---
 

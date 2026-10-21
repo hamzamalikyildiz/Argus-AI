@@ -33,3 +33,4 @@ class PipelineState(TypedDict, total=False):
     audit_passed: bool
     audit_issues: List[str]
     audit_fixes: List[str]
+    telegram_broadcast_sent: bool

@@ -27,6 +27,11 @@ class Settings(BaseSettings):
     # Localization
     report_language: Literal["tr", "en"] = "tr"
 
+    # Telegram Broadcast
+    telegram_bot_token: str = ""
+    telegram_chat_id: str = ""
+    github_repository: str = "hamzamalikyildiz/Argus-AI"
+
     # Ingestion & Filtering
     max_hours_old: int = 24
     max_articles_per_source: int = 8

@@ -7,6 +7,9 @@ def __getattr__(name):
     if name in ("audit_report_content", "audit_report_file", "audit_latest_report", "audit_node"):
         from . import auditor
         return getattr(auditor, name)
+    if name in ("broadcast_node", "send_telegram_broadcast", "prepare_telegram_message"):
+        from . import broadcaster
+        return getattr(broadcaster, name)
     raise AttributeError(f"module {__name__!r} has no attribute {name!r}")
 
 __all__ = [
@@ -18,5 +21,8 @@ __all__ = [
     "audit_report_file",
     "audit_latest_report",
     "audit_node",
+    "broadcast_node",
+    "send_telegram_broadcast",
+    "prepare_telegram_message",
 ]
 

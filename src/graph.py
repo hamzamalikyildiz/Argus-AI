@@ -13,6 +13,7 @@ from src.agents.curator import curate_articles
 from src.agents.analyst import analyze_articles
 from src.agents.reporter import synthesize_report
 from src.agents.auditor import audit_node
+from src.agents.broadcaster import broadcast_node
 from src.utils.archive_manager import save_daily_report, update_catalog_index
 
 logger = logging.getLogger(__name__)
@@ -93,6 +94,7 @@ def build_graph():
     workflow.add_node("report", report_node)
     workflow.add_node("audit", audit_node)
     workflow.add_node("archive", archive_node)
+    workflow.add_node("broadcast", broadcast_node)
 
     # Add Linear Transitions
     workflow.add_edge(START, "ingest")
@@ -101,6 +103,7 @@ def build_graph():
     workflow.add_edge("analyze", "report")
     workflow.add_edge("report", "audit")
     workflow.add_edge("audit", "archive")
-    workflow.add_edge("archive", END)
+    workflow.add_edge("archive", "broadcast")
+    workflow.add_edge("broadcast", END)
 
     return workflow.compile()
