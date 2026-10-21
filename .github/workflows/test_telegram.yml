@@ -18,7 +18,7 @@ jobs:
 
       - name: Install Dependencies
         run: |
-          pip install httpx pydantic-settings
+          pip install -r requirements.txt
 
       - name: Dispatch Test Broadcast
         env:
