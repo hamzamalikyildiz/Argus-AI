@@ -137,16 +137,19 @@ async def broadcast_node(state: Dict[str, Any]) -> Dict[str, Any]:
 
 def main():
     """CLI entrypoint to test Telegram broadcast directly from terminal or CI."""
+    logging.basicConfig(level=logging.INFO, format="%(asctime)s [%(levelname)s] %(message)s")
     parser = argparse.ArgumentParser(description="Test Telegram Broadcaster")
     parser.add_argument("--test", action="store_true", help="Send a test message")
     parser.add_argument("--date", type=str, default="2026-10-21", help="Date of report to broadcast")
     args = parser.parse_args()
 
     import asyncio
+    import sys
     if args.test:
         test_msg = f"🤖 <b>Argus-AI Bot Test</b>\n📅 <code>{args.date}</code>\n\nTelegram yayın kanalı başarıyla bağlandı! ✅"
         result = asyncio.run(send_telegram_broadcast(test_msg))
         print("Test Broadcast Result:", "SUCCESS ✅" if result else "FAILED (Check credentials) ❌")
+        sys.exit(0 if result else 1)
 
 if __name__ == "__main__":
     main()
