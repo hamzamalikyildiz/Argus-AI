@@ -1,6 +1,6 @@
 """Reporter Agent: Synthesizes analyzed articles into a structured, executive-grade Markdown daily brief."""
 import logging
-from typing import List
+from typing import List, Any, Optional, Dict
 from datetime import datetime, timezone
 from langchain_core.prompts import ChatPromptTemplate
 
@@ -20,8 +20,101 @@ Requirements:
 4. Language: Write strictly in {language_name} ({language_code}).
 """
 
+import ast
+import json
+import re
+
+def extract_text_content(content: Any) -> str:
+    """
+    Safely extracts clean string text from various LLM response formats:
+    - plain str
+    - list of blocks: [{'type': 'text', 'text': '...', 'extras': {...}}] (Gemini, Claude, etc.)
+    - object with .text or .content
+    - stringified list/dict representation if converted to str
+    """
+    if content is None:
+        return ""
+
+    # If it's a list, process each element
+    if isinstance(content, list):
+        parts = []
+        for part in content:
+            if isinstance(part, str):
+                parts.append(part)
+            elif isinstance(part, dict):
+                # Standard text block keys
+                if "text" in part and isinstance(part["text"], str):
+                    parts.append(part["text"])
+                elif "content" in part and isinstance(part["content"], str):
+                    parts.append(part["content"])
+            elif hasattr(part, "text") and isinstance(part.text, str):
+                parts.append(part.text)
+            elif hasattr(part, "content") and isinstance(part.content, str):
+                parts.append(part.content)
+        return "".join(parts).strip()
+
+    # If it's an object with .content or .text
+    if hasattr(content, "content") and not isinstance(content, str):
+        return extract_text_content(content.content)
+    if hasattr(content, "text") and not isinstance(content, str):
+        return extract_text_content(content.text)
+
+    # If it's a dict
+    if isinstance(content, dict):
+        if "text" in content and isinstance(content["text"], str):
+            return content["text"].strip()
+        if "content" in content and isinstance(content["content"], str):
+            return content["content"].strip()
+
+    raw_text = str(content).strip()
+
+    # Check if raw_text is a stringified list/dict containing text blocks
+    if (raw_text.startswith("[") and raw_text.endswith("]")) or (raw_text.startswith("{") and raw_text.endswith("}")):
+        try:
+            parsed = ast.literal_eval(raw_text)
+            if isinstance(parsed, (list, dict)):
+                extracted = extract_text_content(parsed)
+                if extracted:
+                    return extracted
+        except Exception:
+            pass
+        try:
+            parsed = json.loads(raw_text)
+            if isinstance(parsed, (list, dict)):
+                extracted = extract_text_content(parsed)
+                if extracted:
+                    return extracted
+        except Exception:
+            pass
+
+    return raw_text
+
+def clean_executive_summary(raw_text: Any) -> str:
+    """
+    Post-processes the executive summary:
+    - Extracts clean text from lists/dicts.
+    - Strips redundant section headers (e.g. '### Yönetici Özeti (TL;DR)').
+    - Strips any residual dictionary / signature artifact strings.
+    - Normalizes formatting.
+    """
+    text = extract_text_content(raw_text)
+
+    # Strip leading markdown headers like "### Yönetici Özeti (TL;DR)" or "## Executive Summary"
+    text = re.sub(
+        r'^(?:#{1,4}\s*.*?executive summary.*?[\r\n]+|#{1,4}\s*.*?yönetici özeti.*?[\r\n]+)',
+        '',
+        text,
+        flags=re.IGNORECASE
+    ).strip()
+
+    # Strip any leaked signature or extras dict pattern if still somehow embedded
+    text = re.sub(r",\s*['\"]extras['\"]\s*:\s*\{.*?\}", '', text, flags=re.DOTALL)
+    text = re.sub(r"['\"]signature['\"]\s*:\s*['\"][A-Za-z0-9+/=]+['\"]", '', text)
+
+    return text.strip()
+
 async def generate_executive_summary(analyzed: List[AnalyzedArticle]) -> str:
-    """Generates the executive TL;DR for the daily report using LLM."""
+    """Generates the executive TL;DR for the daily report using LLM with robust sanitization."""
     if not analyzed:
         return "- Bugün için filtrelenen kriterlere uygun kritik bir gelişme kaydedilmedi." if settings.report_language == "tr" else "- No critical developments met the threshold today."
 
@@ -45,12 +138,16 @@ async def generate_executive_summary(analyzed: List[AnalyzedArticle]) -> str:
             "language_code": settings.report_language,
             "articles_summary": articles_summary
         })
-        return str(response.content).strip()
+        cleaned = clean_executive_summary(response.content)
+        if cleaned and "signature" not in cleaned and "{'type':" not in cleaned and '{"type":' not in cleaned:
+            return cleaned
+        logger.warning("Executive summary output failed safety check, using fallback.")
     except Exception as e:
         logger.error(f"Failed to generate executive summary: {e}")
-        # Deterministic fallback
-        bullets = [f"- **{a.title}**: {a.key_takeaways[0] if a.key_takeaways else a.why_it_matters}" for a in analyzed[:3]]
-        return "\n".join(bullets)
+
+    # Deterministic fallback
+    bullets = [f"- **{a.title}**: {a.key_takeaways[0] if a.key_takeaways else a.why_it_matters}" for a in analyzed[:3]]
+    return "\n".join(bullets)
 
 async def synthesize_report(analyzed_articles: List[AnalyzedArticle], report_date: str) -> str:
     """Compiles the full Markdown report according to design specifications."""

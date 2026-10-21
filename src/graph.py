@@ -12,6 +12,7 @@ from src.ingest.arxiv_collector import collect_all_arxiv
 from src.agents.curator import curate_articles
 from src.agents.analyst import analyze_articles
 from src.agents.reporter import synthesize_report
+from src.agents.auditor import audit_node
 from src.utils.archive_manager import save_daily_report, update_catalog_index
 
 logger = logging.getLogger(__name__)
@@ -69,7 +70,7 @@ async def report_node(state: PipelineState) -> Dict[str, Any]:
 
 async def archive_node(state: PipelineState) -> Dict[str, Any]:
     """Archive Manager: Hierarchical disk storage and catalog indexing."""
-    logger.info(">>> [Phase 5] Saving Report & Updating Catalog Index...")
+    logger.info(">>> [Phase 6] Saving Report & Updating Catalog Index...")
     report_md = state.get("final_report_md", "")
     report_date = state.get("report_date", datetime.now(timezone.utc).strftime("%Y-%m-%d"))
     analyzed = state.get("analyzed_articles", [])
@@ -90,6 +91,7 @@ def build_graph():
     workflow.add_node("curate", curate_node)
     workflow.add_node("analyze", analyze_node)
     workflow.add_node("report", report_node)
+    workflow.add_node("audit", audit_node)
     workflow.add_node("archive", archive_node)
 
     # Add Linear Transitions
@@ -97,7 +99,8 @@ def build_graph():
     workflow.add_edge("ingest", "curate")
     workflow.add_edge("curate", "analyze")
     workflow.add_edge("analyze", "report")
-    workflow.add_edge("report", "archive")
+    workflow.add_edge("report", "audit")
+    workflow.add_edge("audit", "archive")
     workflow.add_edge("archive", END)
 
     return workflow.compile()

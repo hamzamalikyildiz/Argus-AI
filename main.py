@@ -43,7 +43,10 @@ async def run_pipeline(date_str: str = None, lang: str = None):
         "analyzed_articles": [],
         "final_report_md": "",
         "report_date": today,
-        "report_file_path": ""
+        "report_file_path": "",
+        "audit_passed": True,
+        "audit_issues": [],
+        "audit_fixes": []
     }
 
     graph = build_graph()
@@ -51,11 +54,15 @@ async def run_pipeline(date_str: str = None, lang: str = None):
     try:
         final_state = await graph.ainvoke(initial_state)
         report_path = final_state.get("report_file_path")
+        audit_passed = final_state.get("audit_passed", True)
+        issues = final_state.get("audit_issues", [])
+        fixes = final_state.get("audit_fixes", [])
         
         print("\n" + "=" * 65)
         print(" ✅ PIPELINE COMPLETED SUCCESSFULLY")
         print(f" 📄 Generated Report: {report_path}")
         print(f" 📊 Raw: {len(final_state.get('raw_articles', []))} | Curated: {len(final_state.get('curated_articles', []))} | Analyzed: {len(final_state.get('analyzed_articles', []))}")
+        print(f" 🛡️ Auditor Gate: {'PASSED ✅' if audit_passed else 'WARNING ⚠️'} (Issues: {len(issues)} | Fixes: {len(fixes)})")
         print("=" * 65 + "\n")
         return final_state
     except Exception as e:
@@ -63,6 +70,13 @@ async def run_pipeline(date_str: str = None, lang: str = None):
         sys.exit(1)
 
 def main():
+    try:
+        if sys.stdout.encoding and sys.stdout.encoding.lower() != "utf-8":
+            sys.stdout.reconfigure(encoding="utf-8")
+            sys.stderr.reconfigure(encoding="utf-8")
+    except Exception:
+        pass
+
     parser = argparse.ArgumentParser(description="AI Intelligence Daily Brief Agent")
     parser.add_argument("--date", type=str, default=None, help="Target report date (YYYY-MM-DD)")
     parser.add_argument("--lang", type=str, choices=["tr", "en"], default=None, help="Report language override ('tr' or 'en')")

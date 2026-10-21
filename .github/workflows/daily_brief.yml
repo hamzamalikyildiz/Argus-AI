@@ -47,3 +47,7 @@ jobs:
           git config --local user.name "AI Intelligence Bot"
           git add reports/ README.md
           git diff --quiet && git diff --staged --quiet || (git commit -m "chore(report): auto-generate brief for $(date +'%Y-%m-%d')" && git push)
+
+      - name: Post-Publish Verification (Auditor Agent)
+        run: |
+          python -m src.agents.auditor --latest --strict

@@ -20,6 +20,9 @@ Deterministic LangGraph StateGraph pipeline running daily via GitHub Actions:
 - [x] **Milestone 4.1 & 4.2**: LangGraph StateGraph (`src/graph.py`) and CLI entrypoint (`main.py`).
 - [x] **Milestone 5.1**: GitHub Actions Workflow (`.github/workflows/daily_brief.yml`).
 - [x] **Milestone 5.2**: Test suite and Docker configuration (`Dockerfile`, `tests/`).
+- [x] **Milestone 6.1**: Bugfix for LLM content leak & cryptographic signature stripping (`src/agents/reporter.py`, `reports/2026/10/2026-10-20-daily-brief.md`).
+- [x] **Milestone 6.2**: Auditor Agent with auto-heal capability, StateGraph gatekeeper node, and GitHub Actions post-push verification (`src/agents/auditor.py`, `src/graph.py`, `.github/workflows/daily_brief.yml`).
+- [x] **Milestone 6.3**: Unit and integration test suite for leak prevention and quality auditing (`tests/test_reporter.py`, `tests/test_auditor.py`).
 
 ## 3. How to Run Locally
 ```bash

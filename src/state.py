@@ -23,10 +23,13 @@ class AnalyzedArticle(BaseModel):
     technical_depth: str = Field(..., description="Detailed architectural, algorithmic, or benchmark analysis")
     why_it_matters: str = Field(..., description="Significance for developers, researchers, and open-source ecosystem")
 
-class PipelineState(TypedDict):
+class PipelineState(TypedDict, total=False):
     raw_articles: List[RawArticle]
     curated_articles: List[CuratedArticle]
     analyzed_articles: List[AnalyzedArticle]
     final_report_md: str
     report_date: str      # YYYY-MM-DD
     report_file_path: str # reports/YYYY/MM/YYYY-MM-DD-daily-brief.md
+    audit_passed: bool
+    audit_issues: List[str]
+    audit_fixes: List[str]
