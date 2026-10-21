@@ -42,9 +42,12 @@ jobs:
           python main.py
 
       - name: Commit and Push Report
+        env:
+          USER_EMAIL: ${{ secrets.USER_EMAIL || secrets.GIT_USER_EMAIL || secrets.GH_EMAIL }}
+          USER_NAME: ${{ secrets.USER_NAME || secrets.GIT_USER_NAME || 'hamzamalikyildiz' }}
         run: |
-          git config --local user.email "action@github.com"
-          git config --local user.name "AI Intelligence Bot"
+          git config --local user.email "${USER_EMAIL:-action@github.com}"
+          git config --local user.name "${USER_NAME:-hamzamalikyildiz}"
           git add reports/ README.md
           git diff --quiet && git diff --staged --quiet || (git commit -m "chore(report): auto-generate brief for $(date +'%Y-%m-%d')" && git push)
 
