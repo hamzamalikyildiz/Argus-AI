@@ -4,11 +4,12 @@ on:
   workflow_dispatch:
     inputs:
       action:
-        description: 'Broadcast Eylemi (apology_and_reports veya test)'
+        description: 'Broadcast Eylemi (broadcast_22, apology_and_reports veya test)'
         required: true
-        default: 'apology_and_reports'
+        default: 'broadcast_22'
         type: choice
         options:
+          - broadcast_22
           - apology_and_reports
           - test
 
@@ -36,6 +37,8 @@ jobs:
         run: |
           if [ "${{ inputs.action }}" = "test" ]; then
             python -m src.agents.broadcaster --test
+          elif [ "${{ inputs.action }}" = "broadcast_22" ]; then
+            python -m src.agents.broadcaster --broadcast-date 2026-10-22
           else
             python -m src.agents.broadcaster --apology-and-reports
           fi

@@ -194,12 +194,26 @@ def main():
     parser = argparse.ArgumentParser(description="Test Telegram Broadcaster")
     parser.add_argument("--test", action="store_true", help="Send a test message")
     parser.add_argument("--date", type=str, default="2026-10-21", help="Date of report to broadcast")
+    parser.add_argument("--broadcast-date", type=str, default=None, help="Broadcast a specific report date (YYYY-MM-DD)")
     parser.add_argument("--apology-and-reports", action="store_true", help="Send apology message followed by recent reports")
     args = parser.parse_args()
 
     import asyncio
     import sys
-    if args.apology_and_reports:
+    if args.broadcast_date:
+        dt = args.broadcast_date
+        parts = dt.split("-")
+        year, month = (parts[0], parts[1]) if len(parts) == 3 else ("2026", "10")
+        report_file = settings.reports_dir / year / month / f"{dt}-daily-brief.md"
+        if not report_file.exists():
+            print(f"Report file {report_file} not found!")
+            sys.exit(1)
+        content = report_file.read_text(encoding="utf-8")
+        msg = prepare_telegram_message(content, dt)
+        ok = asyncio.run(send_telegram_broadcast(msg))
+        print(f"Broadcast for {dt} Result:", "SUCCESS ✅" if ok else "FAILED (Check credentials) ❌")
+        sys.exit(0 if ok else 1)
+    elif args.apology_and_reports:
         result = asyncio.run(send_apology_and_reports())
         print("Apology & Reports Broadcast Result:", "SUCCESS ✅" if result else "FAILED (Check credentials) ❌")
         sys.exit(0 if result else 1)
