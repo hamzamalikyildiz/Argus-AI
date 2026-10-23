@@ -56,7 +56,9 @@ async def curate_articles(raw_articles: List[RawArticle]) -> List[CuratedArticle
     # Create mapping by ID for fast lookup
     article_map: Dict[str, RawArticle] = {a.id: a for a in raw_articles}
     batch_size = 15
+    total_batches = (len(raw_articles) + batch_size - 1) // batch_size
     all_scores: List[ArticleScore] = []
+    batch_errors: List[str] = []
 
     for i in range(0, len(raw_articles), batch_size):
         batch = raw_articles[i:i + batch_size]
@@ -70,7 +72,17 @@ async def curate_articles(raw_articles: List[RawArticle]) -> List[CuratedArticle
             if result and result.evaluations:
                 all_scores.extend(result.evaluations)
         except Exception as e:
-            logger.error(f"Error curating batch {i // batch_size + 1}: {e}")
+            err_msg = f"Error curating batch {i // batch_size + 1}/{total_batches}: {e}"
+            logger.error(err_msg)
+            batch_errors.append(err_msg)
+
+    # If raw articles existed but every single batch failed due to LLM API errors,
+    # raise explicitly to prevent generating and pushing a blank/broken report.
+    if not all_scores and batch_errors:
+        raise RuntimeError(
+            f"Curator Agent failed: All {len(batch_errors)}/{total_batches} article curation batches failed due to LLM errors. "
+            f"First error: {batch_errors[0]}"
+        )
 
     # Build CuratedArticle objects
     curated_list: List[CuratedArticle] = []

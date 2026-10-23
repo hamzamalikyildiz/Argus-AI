@@ -38,3 +38,67 @@ async def test_curator_smart_fallback(monkeypatch):
     assert len(curated) >= 3
     assert all(item.relevance_score >= 5 for item in curated)
     assert curated[0].relevance_score == 6
+
+
+@pytest.mark.asyncio
+async def test_curator_raises_on_all_batches_failed():
+    raw_articles = [
+        RawArticle(id=f"id-{i}", title=f"News {i}", source="Feed", url=f"https://example.com/{i}", published_at="2026-10-19T10:00:00Z", summary=f"Summary {i}")
+        for i in range(3)
+    ]
+
+    mock_chain = AsyncMock()
+    mock_chain.ainvoke.side_effect = Exception("404 NOT_FOUND. Model is no longer available.")
+
+    with patch("src.agents.curator.get_chat_model") as mock_get_model:
+        mock_llm = AsyncMock()
+        mock_get_model.return_value = mock_llm
+        with patch("src.agents.curator.ChatPromptTemplate") as mock_prompt:
+            mock_prompt.from_messages.return_value.__or__.return_value = mock_chain
+            with pytest.raises(RuntimeError) as exc_info:
+                await curate_articles(raw_articles)
+            assert "Curator Agent failed: All" in str(exc_info.value)
+            assert "404 NOT_FOUND" in str(exc_info.value)
+
+
+def test_llm_factory_gemini_model_mapping(monkeypatch):
+    import sys
+    from unittest.mock import MagicMock
+    from src.agents.llm_factory import get_chat_model
+    from config.settings import settings
+
+    monkeypatch.setattr(settings, "llm_provider", "gemini")
+    monkeypatch.setattr(settings, "gemini_api_key", "test-fake-key")
+
+    mock_chat = MagicMock()
+    mock_module = MagicMock()
+    mock_module.ChatGoogleGenerativeAI = mock_chat
+
+    with patch.dict(sys.modules, {"langchain_google_genai": mock_module}):
+        # Test deprecated model is automatically remapped
+        monkeypatch.setattr(settings, "curator_model", "gemini-2.0-flash")
+        get_chat_model(role="curator")
+        mock_chat.assert_called_with(
+            model="gemini-3.8-flash",
+            google_api_key="test-fake-key",
+            temperature=0.2
+        )
+
+        # Test another deprecated alias
+        monkeypatch.setattr(settings, "analyst_model", "gemini-pro")
+        get_chat_model(role="analyst")
+        mock_chat.assert_called_with(
+            model="gemini-3.8-flash",
+            google_api_key="test-fake-key",
+            temperature=0.2
+        )
+
+        # Test active model remains untouched
+        monkeypatch.setattr(settings, "curator_model", "gemini-3.8-flash")
+        get_chat_model(role="curator")
+        mock_chat.assert_called_with(
+            model="gemini-3.8-flash",
+            google_api_key="test-fake-key",
+            temperature=0.2
+        )
+

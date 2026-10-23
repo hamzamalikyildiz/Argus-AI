@@ -49,8 +49,8 @@ jobs:
           LLM_PROVIDER: ${{ secrets.LLM_PROVIDER || 'gemini' }}
           GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
           OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
-          CURATOR_MODEL: ${{ secrets.CURATOR_MODEL || 'gemini-2.0-flash' }}
-          ANALYST_MODEL: ${{ secrets.ANALYST_MODEL || 'gemini-2.0-flash' }}
+          CURATOR_MODEL: ${{ secrets.CURATOR_MODEL || 'gemini-3.8-flash' }}
+          ANALYST_MODEL: ${{ secrets.ANALYST_MODEL || 'gemini-3.8-flash' }}
           REPORT_LANGUAGE: ${{ inputs.language || secrets.REPORT_LANGUAGE || 'tr' }}
           TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
           TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}

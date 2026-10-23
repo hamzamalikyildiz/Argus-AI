@@ -30,15 +30,28 @@ def get_chat_model(role: str = "curator", temperature: float = 0.2) -> BaseChatM
         
         model_name = settings.curator_model if role == "curator" else settings.analyst_model
         if not model_name:
-            model_name = "gemini-2.0-flash" if role == "curator" else "gemini-2.0-flash"
+            model_name = "gemini-3.8-flash"
 
-        # Auto-map IDE aliases or legacy versions to active Google Gemini models
+        # Auto-map deprecated / legacy versions or aliases to active Google Gemini models
         model_mapping = {
-            "gemini-3.8-flash": "gemini-2.0-flash",
-            "gemini-pro": "gemini-2.0-flash",
-            "gemini-1.0-pro": "gemini-1.5-flash",
+            "gemini-2.0-flash": "gemini-3.8-flash",
+            "gemini-2.0-flash-exp": "gemini-3.8-flash",
+            "gemini-2.0-pro": "gemini-3.8-flash",
+            "gemini-2.0-pro-exp": "gemini-3.8-flash",
+            "gemini-1.5-flash": "gemini-3.8-flash",
+            "gemini-1.5-pro": "gemini-3.8-flash",
+            "gemini-1.0-pro": "gemini-3.8-flash",
+            "gemini-pro": "gemini-3.8-flash",
+            "gemini-flash": "gemini-3.8-flash",
         }
-        model_name = model_mapping.get(model_name.lower().strip(), model_name)
+        requested_model = model_name.strip()
+        resolved_model = model_mapping.get(requested_model.lower(), requested_model)
+        if resolved_model != requested_model:
+            logger.warning(
+                f"Model '{requested_model}' is deprecated or aliased. "
+                f"Automatically mapped to active model '{resolved_model}'."
+            )
+        model_name = resolved_model
 
         logger.info(f"Initializing Gemini model '{model_name}' for role '{role}'")
         return ChatGoogleGenerativeAI(
