@@ -66,7 +66,7 @@ jobs:
           git config --local user.email "${USER_EMAIL:-action@github.com}"
           git config --local user.name "${USER_NAME:-hamzamalikyildiz}"
           git add reports/ README.md
-          git diff --quiet && git diff --staged --quiet || (git commit -m "chore(report): auto-generate brief for $(date +'%Y-%m-%d')" && git push)
+          git diff --quiet && git diff --staged --quiet || (git commit -m "chore(report): auto-generate brief for $(date +'%Y-%m-%d')" && git pull --rebase origin main && git push)
 
       - name: Post-Publish Verification (Auditor Agent)
         run: |
