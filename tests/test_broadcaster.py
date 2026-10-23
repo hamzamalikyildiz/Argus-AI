@@ -97,3 +97,16 @@ async def test_broadcast_node_execution():
         res = await broadcast_node(state)
         assert res["telegram_broadcast_sent"] is True
         mock_send.assert_called_once()
+
+@pytest.mark.asyncio
+async def test_send_apology_and_reports():
+    from src.agents.broadcaster import send_apology_and_reports
+    with patch("src.agents.broadcaster.send_telegram_broadcast", new_callable=AsyncMock) as mock_send:
+        mock_send.return_value = True
+        ok = await send_apology_and_reports(dates=["2026-10-21"])
+        assert ok is True
+        # Called at least twice: 1 apology + 1 report
+        assert mock_send.call_count >= 2
+        apology_call = mock_send.call_args_list[0][0][0]
+        assert "Özür Mesajı" in apology_call
+        assert "Gemini 3.8 Flash" in apology_call

@@ -1,10 +1,19 @@
-name: Test Telegram Broadcast
+name: Telegram Broadcast Dispatch
 
 on:
   workflow_dispatch:
+    inputs:
+      action:
+        description: 'Broadcast Eylemi (apology_and_reports veya test)'
+        required: true
+        default: 'apology_and_reports'
+        type: choice
+        options:
+          - apology_and_reports
+          - test
 
 jobs:
-  test:
+  broadcast:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout Repository
@@ -20,9 +29,13 @@ jobs:
         run: |
           pip install -r requirements.txt
 
-      - name: Dispatch Test Broadcast
+      - name: Dispatch Broadcast
         env:
           TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
           TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
         run: |
-          python -m src.agents.broadcaster --test
+          if [ "${{ inputs.action }}" = "test" ]; then
+            python -m src.agents.broadcaster --test
+          else
+            python -m src.agents.broadcaster --apology-and-reports
+          fi

@@ -135,17 +135,75 @@ async def broadcast_node(state: Dict[str, Any]) -> Dict[str, Any]:
 
     return {"telegram_broadcast_sent": False}
 
+async def send_apology_and_reports(dates: Optional[list] = None) -> bool:
+    """Dispatches apology announcement followed by formatted daily briefs for specified dates."""
+    import asyncio
+    from pathlib import Path
+
+    if dates is None:
+        dates = ["2026-10-22", "2026-10-23"]
+
+    apology_msg = (
+        "📢 <b>Önemli Bilgilendirme ve Özür Mesajı</b>\n\n"
+        "Değerli takipçilerimiz,\n\n"
+        "22 ve 23 Ekim 2026 tarihlerinde yapay zeka altyapımızda (Google Gemini API) "
+        "<code>gemini-2.0-flash</code> modelinin kullanımdan kaldırılması sebebiyle teknik bir "
+        "aksaklık yaşanmış ve bültenlerimizde kesinti meydana gelmiştir.\n\n"
+        "🛠️ <b>Yapılan Kalıcı İyileştirmeler:</b>\n"
+        "• Model altyapımız en güncel <b>Gemini 3.8 Flash</b> sürümüne yükseltilmiştir.\n"
+        "• Model değişikliklerine ve API kesintilerine karşı otomatik model geçişi (fallback) "
+        "ve fail-safe sigorta mekanizmaları devreye alınmıştır.\n"
+        "• Son 2 güne ait bültenler en yeni araştırma makaleleri ve teknik analizlerle yeniden üretilmiştir.\n\n"
+        "Yaşanan bu teknik gecikmeden dolayı özür diler, anlayışınız ve desteğiniz için teşekkür ederiz! 🙏\n\n"
+        "Aşağıda güncellenen son 2 günün (22 ve 23 Ekim) bülten özetlerini paylaşıyoruz 👇"
+    )
+
+    logger.info("Sending apology message to Telegram...")
+    ok = await send_telegram_broadcast(apology_msg)
+    if not ok:
+        logger.error("Failed to send apology message.")
+        return False
+
+    for dt in dates:
+        await asyncio.sleep(2.0)  # Rate limiting and order preservation
+        parts = dt.split("-")
+        if len(parts) == 3:
+            year, month = parts[0], parts[1]
+        else:
+            year, month = "2026", "10"
+        
+        report_file = settings.reports_dir / year / month / f"{dt}-daily-brief.md"
+        if not report_file.exists():
+            logger.warning(f"Report file for {dt} not found at {report_file}")
+            continue
+
+        report_content = report_file.read_text(encoding="utf-8")
+        msg = prepare_telegram_message(report_content, dt)
+        logger.info(f"Sending Telegram broadcast for report date: {dt}...")
+        report_ok = await send_telegram_broadcast(msg)
+        if report_ok:
+            logger.info(f"Successfully broadcasted report for {dt} to Telegram.")
+        else:
+            logger.error(f"Failed to broadcast report for {dt} to Telegram.")
+
+    return True
+
 def main():
     """CLI entrypoint to test Telegram broadcast directly from terminal or CI."""
     logging.basicConfig(level=logging.INFO, format="%(asctime)s [%(levelname)s] %(message)s")
     parser = argparse.ArgumentParser(description="Test Telegram Broadcaster")
     parser.add_argument("--test", action="store_true", help="Send a test message")
     parser.add_argument("--date", type=str, default="2026-10-21", help="Date of report to broadcast")
+    parser.add_argument("--apology-and-reports", action="store_true", help="Send apology message followed by recent reports")
     args = parser.parse_args()
 
     import asyncio
     import sys
-    if args.test:
+    if args.apology_and_reports:
+        result = asyncio.run(send_apology_and_reports())
+        print("Apology & Reports Broadcast Result:", "SUCCESS ✅" if result else "FAILED (Check credentials) ❌")
+        sys.exit(0 if result else 1)
+    elif args.test:
         test_msg = f"🤖 <b>Argus-AI Bot Test</b>\n📅 <code>{args.date}</code>\n\nTelegram yayın kanalı başarıyla bağlandı! ✅"
         result = asyncio.run(send_telegram_broadcast(test_msg))
         print("Test Broadcast Result:", "SUCCESS ✅" if result else "FAILED (Check credentials) ❌")
