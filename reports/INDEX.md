@@ -2,6 +2,7 @@
 
 | Tarih | Başlık / Odak Noktası | Rapor Linki |
 |:---:|:---|:---:|
+| 2026-10-27 | OpenAI Launches GPT-6.1 Terra, Halving GPT-6.1 Sol’s API Pri | [Raporu Oku](reports/2026/10/2026-10-27-daily-brief.md) |
 | 2026-10-26 | Hugging Face Releases Carbon-X, a 14B Open DNA Language Mode | [Raporu Oku](reports/2026/10/2026-10-26-daily-brief.md) |
 | 2026-10-24 | Kyutai CADRE, Moonshot AI Releases Kimi K3.1 Pro | [Raporu Oku](reports/2026/10/2026-10-24-daily-brief.md) |
 | 2026-10-23 | [ArXiv] Low-Bit N-Gram Embeddings for Language Models, [ArXi | [Raporu Oku](reports/2026/10/2026-10-23-daily-brief.md) |
