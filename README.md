@@ -154,6 +154,7 @@ python main.py --date 2026-10-19 --lang tr
 <!-- RECENT_REPORTS_START -->
 | Tarih | Başlık / Odak Noktası | Rapor Linki |
 |:---:|:---|:---:|
+| 2026-10-29 | NVIDIA Releases Nemotron 3.5 Transcribe, Google DeepMind Int | [Raporu Oku](reports/2026/10/2026-10-29-daily-brief.md) |
 | 2026-10-28 | Polymathic AI and Princeton Researchers Release FlashMap, a  | [Raporu Oku](reports/2026/10/2026-10-28-daily-brief.md) |
 | 2026-10-27 | OpenAI Launches GPT-6.1 Terra, Halving GPT-6.1 Sol’s API Pri | [Raporu Oku](reports/2026/10/2026-10-27-daily-brief.md) |
 | 2026-10-26 | Hugging Face Releases Carbon-X, a 14B Open DNA Language Mode | [Raporu Oku](reports/2026/10/2026-10-26-daily-brief.md) |
