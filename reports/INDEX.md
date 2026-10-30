@@ -2,6 +2,7 @@
 
 | Tarih | Başlık / Odak Noktası | Rapor Linki |
 |:---:|:---|:---:|
+| 2026-10-30 | Mistral releases weights for its trillion-parameter AI model | [Raporu Oku](reports/2026/10/2026-10-30-daily-brief.md) |
 | 2026-10-29 | NVIDIA Releases Nemotron 3.5 Transcribe, Google DeepMind Int | [Raporu Oku](reports/2026/10/2026-10-29-daily-brief.md) |
 | 2026-10-28 | Polymathic AI and Princeton Researchers Release FlashMap, a  | [Raporu Oku](reports/2026/10/2026-10-28-daily-brief.md) |
 | 2026-10-27 | OpenAI Launches GPT-6.1 Terra, Halving GPT-6.1 Sol’s API Pri | [Raporu Oku](reports/2026/10/2026-10-27-daily-brief.md) |

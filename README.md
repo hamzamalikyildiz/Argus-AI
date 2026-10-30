@@ -154,6 +154,7 @@ python main.py --date 2026-10-19 --lang tr
 <!-- RECENT_REPORTS_START -->
 | Tarih | Başlık / Odak Noktası | Rapor Linki |
 |:---:|:---|:---:|
+| 2026-10-30 | Mistral releases weights for its trillion-parameter AI model | [Raporu Oku](reports/2026/10/2026-10-30-daily-brief.md) |
 | 2026-10-29 | NVIDIA Releases Nemotron 3.5 Transcribe, Google DeepMind Int | [Raporu Oku](reports/2026/10/2026-10-29-daily-brief.md) |
 | 2026-10-28 | Polymathic AI and Princeton Researchers Release FlashMap, a  | [Raporu Oku](reports/2026/10/2026-10-28-daily-brief.md) |
 | 2026-10-27 | OpenAI Launches GPT-6.1 Terra, Halving GPT-6.1 Sol’s API Pri | [Raporu Oku](reports/2026/10/2026-10-27-daily-brief.md) |
@@ -163,7 +164,6 @@ python main.py --date 2026-10-19 --lang tr
 | 2026-10-22 | Günlük AI Bülteni | [Raporu Oku](reports/2026/10/2026-10-22-daily-brief.md) |
 | 2026-10-21 | Mistral AI Releases Voxtral 3, Google Cloud Ships llm-d 1.0  | [Raporu Oku](reports/2026/10/2026-10-21-daily-brief.md) |
 | 2026-10-20 | MiniMax Just Launched M3.1 Flash, [ArXiv] WeAct | [Raporu Oku](reports/2026/10/2026-10-20-daily-brief.md) |
-| 2026-10-19 | MiniMax Just Launched M3.1 Flash, NVIDIA Open Sources Run | [Raporu Oku](reports/2026/10/2026-10-19-daily-brief.md) |
 
 [Tüm Arşivi Gör (reports/INDEX.md)](reports/INDEX.md)
 <!-- RECENT_REPORTS_END -->
