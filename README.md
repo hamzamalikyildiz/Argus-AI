@@ -154,6 +154,7 @@ python main.py --date 2026-10-19 --lang tr
 <!-- RECENT_REPORTS_START -->
 | Tarih | Başlık / Odak Noktası | Rapor Linki |
 |:---:|:---|:---:|
+| 2026-11-08 | Nous Research Releases Arete-27B that Cuts Qwen3.8-27B Propa | [Raporu Oku](reports/2026/11/2026-11-08-daily-brief.md) |
 | 2026-11-02 | Meet qwenGPU, NVIDIA Releases Auto Ontology | [Raporu Oku](reports/2026/11/2026-11-02-daily-brief.md) |
 | 2026-11-01 | DeepSeek Open-Sources dsh-superagent, a Router-Worker Coding | [Raporu Oku](reports/2026/11/2026-11-01-daily-brief.md) |
 | 2026-10-31 | [ArXiv] Rethinking Neural Thickets Without Weight Perturbati | [Raporu Oku](reports/2026/10/2026-10-31-daily-brief.md) |
@@ -163,7 +164,6 @@ python main.py --date 2026-10-19 --lang tr
 | 2026-10-27 | OpenAI Launches GPT-6.1 Terra, Halving GPT-6.1 Sol’s API Pri | [Raporu Oku](reports/2026/10/2026-10-27-daily-brief.md) |
 | 2026-10-26 | Hugging Face Releases Carbon-X, a 14B Open DNA Language Mode | [Raporu Oku](reports/2026/10/2026-10-26-daily-brief.md) |
 | 2026-10-24 | Kyutai CADRE, Moonshot AI Releases Kimi K3.1 Pro | [Raporu Oku](reports/2026/10/2026-10-24-daily-brief.md) |
-| 2026-10-23 | [ArXiv] Low-Bit N-Gram Embeddings for Language Models, [ArXi | [Raporu Oku](reports/2026/10/2026-10-23-daily-brief.md) |
 
 [Tüm Arşivi Gör (reports/INDEX.md)](reports/INDEX.md)
 <!-- RECENT_REPORTS_END -->

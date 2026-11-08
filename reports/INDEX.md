@@ -2,6 +2,7 @@
 
 | Tarih | Başlık / Odak Noktası | Rapor Linki |
 |:---:|:---|:---:|
+| 2026-11-08 | Nous Research Releases Arete-27B that Cuts Qwen3.8-27B Propa | [Raporu Oku](reports/2026/11/2026-11-08-daily-brief.md) |
 | 2026-11-02 | Meet qwenGPU, NVIDIA Releases Auto Ontology | [Raporu Oku](reports/2026/11/2026-11-02-daily-brief.md) |
 | 2026-11-01 | DeepSeek Open-Sources dsh-superagent, a Router-Worker Coding | [Raporu Oku](reports/2026/11/2026-11-01-daily-brief.md) |
 | 2026-10-31 | [ArXiv] Rethinking Neural Thickets Without Weight Perturbati | [Raporu Oku](reports/2026/10/2026-10-31-daily-brief.md) |
