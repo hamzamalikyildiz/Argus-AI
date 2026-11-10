@@ -154,6 +154,7 @@ python main.py --date 2026-10-19 --lang tr
 <!-- RECENT_REPORTS_START -->
 | Tarih | Başlık / Odak Noktası | Rapor Linki |
 |:---:|:---|:---:|
+| 2026-11-10 | Anthropic releases new Mythos and Fable models amid RSI conc | [Raporu Oku](reports/2026/11/2026-11-10-daily-brief.md) |
 | 2026-11-09 | Reason Machines Open-Sources Aspen, a Git Server Built for A | [Raporu Oku](reports/2026/11/2026-11-09-daily-brief.md) |
 | 2026-11-08 | Nous Research Releases Arete-27B that Cuts Qwen3.8-27B Propa | [Raporu Oku](reports/2026/11/2026-11-08-daily-brief.md) |
 | 2026-11-02 | Meet qwenGPU, NVIDIA Releases Auto Ontology | [Raporu Oku](reports/2026/11/2026-11-02-daily-brief.md) |
@@ -163,7 +164,6 @@ python main.py --date 2026-10-19 --lang tr
 | 2026-10-29 | NVIDIA Releases Nemotron 3.5 Transcribe, Google DeepMind Int | [Raporu Oku](reports/2026/10/2026-10-29-daily-brief.md) |
 | 2026-10-28 | Polymathic AI and Princeton Researchers Release FlashMap, a  | [Raporu Oku](reports/2026/10/2026-10-28-daily-brief.md) |
 | 2026-10-27 | OpenAI Launches GPT-6.1 Terra, Halving GPT-6.1 Sol’s API Pri | [Raporu Oku](reports/2026/10/2026-10-27-daily-brief.md) |
-| 2026-10-26 | Hugging Face Releases Carbon-X, a 14B Open DNA Language Mode | [Raporu Oku](reports/2026/10/2026-10-26-daily-brief.md) |
 
 [Tüm Arşivi Gör (reports/INDEX.md)](reports/INDEX.md)
 <!-- RECENT_REPORTS_END -->
