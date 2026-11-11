@@ -2,6 +2,7 @@
 
 | Tarih | Başlık / Odak Noktası | Rapor Linki |
 |:---:|:---|:---:|
+| 2026-11-11 | Anthropic Launches Claude Fable 5.2 and Mythos 5.2, MBZUAI’s | [Raporu Oku](reports/2026/11/2026-11-11-daily-brief.md) |
 | 2026-11-10 | Anthropic releases new Mythos and Fable models amid RSI conc | [Raporu Oku](reports/2026/11/2026-11-10-daily-brief.md) |
 | 2026-11-09 | Reason Machines Open-Sources Aspen, a Git Server Built for A | [Raporu Oku](reports/2026/11/2026-11-09-daily-brief.md) |
 | 2026-11-08 | Nous Research Releases Arete-27B that Cuts Qwen3.8-27B Propa | [Raporu Oku](reports/2026/11/2026-11-08-daily-brief.md) |
