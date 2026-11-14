@@ -154,6 +154,7 @@ python main.py --date 2026-10-19 --lang tr
 <!-- RECENT_REPORTS_START -->
 | Tarih | Başlık / Odak Noktası | Rapor Linki |
 |:---:|:---|:---:|
+| 2026-11-14 | llama.cpp v1.0.0, Perplexity Releases Decider v1.3 | [Raporu Oku](reports/2026/11/2026-11-14-daily-brief.md) |
 | 2026-11-12 | Google DeepMind Releases AlphaGenome 2 for Cell-Type-Specifi | [Raporu Oku](reports/2026/11/2026-11-12-daily-brief.md) |
 | 2026-11-11 | Anthropic Launches Claude Fable 5.2 and Mythos 5.2, MBZUAI’s | [Raporu Oku](reports/2026/11/2026-11-11-daily-brief.md) |
 | 2026-11-10 | Anthropic releases new Mythos and Fable models amid RSI conc | [Raporu Oku](reports/2026/11/2026-11-10-daily-brief.md) |
@@ -163,7 +164,6 @@ python main.py --date 2026-10-19 --lang tr
 | 2026-11-01 | DeepSeek Open-Sources dsh-superagent, a Router-Worker Coding | [Raporu Oku](reports/2026/11/2026-11-01-daily-brief.md) |
 | 2026-10-31 | [ArXiv] Rethinking Neural Thickets Without Weight Perturbati | [Raporu Oku](reports/2026/10/2026-10-31-daily-brief.md) |
 | 2026-10-30 | Mistral releases weights for its trillion-parameter AI model | [Raporu Oku](reports/2026/10/2026-10-30-daily-brief.md) |
-| 2026-10-29 | NVIDIA Releases Nemotron 3.5 Transcribe, Google DeepMind Int | [Raporu Oku](reports/2026/10/2026-10-29-daily-brief.md) |
 
 [Tüm Arşivi Gör (reports/INDEX.md)](reports/INDEX.md)
 <!-- RECENT_REPORTS_END -->
