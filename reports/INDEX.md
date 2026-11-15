@@ -2,6 +2,7 @@
 
 | Tarih | Başlık / Odak Noktası | Rapor Linki |
 |:---:|:---|:---:|
+| 2026-11-15 | Cmpnd Releases dspy-wsp | [Raporu Oku](reports/2026/11/2026-11-15-daily-brief.md) |
 | 2026-11-14 | llama.cpp v1.0.0, Perplexity Releases Decider v1.3 | [Raporu Oku](reports/2026/11/2026-11-14-daily-brief.md) |
 | 2026-11-12 | Google DeepMind Releases AlphaGenome 2 for Cell-Type-Specifi | [Raporu Oku](reports/2026/11/2026-11-12-daily-brief.md) |
 | 2026-11-11 | Anthropic Launches Claude Fable 5.2 and Mythos 5.2, MBZUAI’s | [Raporu Oku](reports/2026/11/2026-11-11-daily-brief.md) |
