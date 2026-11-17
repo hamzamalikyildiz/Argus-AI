@@ -154,6 +154,7 @@ python main.py --date 2026-10-19 --lang tr
 <!-- RECENT_REPORTS_START -->
 | Tarih | Başlık / Odak Noktası | Rapor Linki |
 |:---:|:---|:---:|
+| 2026-11-17 | [ArXiv] Latent Lattice Language Models, [ArXiv] ViRA | [Raporu Oku](reports/2026/11/2026-11-17-daily-brief.md) |
 | 2026-11-16 | Alibaba Releases Qwen4-Max, Meet Meta’s JiTTests | [Raporu Oku](reports/2026/11/2026-11-16-daily-brief.md) |
 | 2026-11-15 | Cmpnd Releases dspy-wsp | [Raporu Oku](reports/2026/11/2026-11-15-daily-brief.md) |
 | 2026-11-14 | llama.cpp v1.0.0, Perplexity Releases Decider v1.3 | [Raporu Oku](reports/2026/11/2026-11-14-daily-brief.md) |
@@ -163,7 +164,6 @@ python main.py --date 2026-10-19 --lang tr
 | 2026-11-09 | Reason Machines Open-Sources Aspen, a Git Server Built for A | [Raporu Oku](reports/2026/11/2026-11-09-daily-brief.md) |
 | 2026-11-08 | Nous Research Releases Arete-27B that Cuts Qwen3.8-27B Propa | [Raporu Oku](reports/2026/11/2026-11-08-daily-brief.md) |
 | 2026-11-02 | Meet qwenGPU, NVIDIA Releases Auto Ontology | [Raporu Oku](reports/2026/11/2026-11-02-daily-brief.md) |
-| 2026-11-01 | DeepSeek Open-Sources dsh-superagent, a Router-Worker Coding | [Raporu Oku](reports/2026/11/2026-11-01-daily-brief.md) |
 
 [Tüm Arşivi Gör (reports/INDEX.md)](reports/INDEX.md)
 <!-- RECENT_REPORTS_END -->
