@@ -2,6 +2,7 @@
 
 | Tarih | Başlık / Odak Noktası | Rapor Linki |
 |:---:|:---|:---:|
+| 2026-11-19 | Google DeepMind Releases Gemini 4 Neon, New LoRA Adapter Lif | [Raporu Oku](reports/2026/11/2026-11-19-daily-brief.md) |
 | 2026-11-17 | [ArXiv] Latent Lattice Language Models, [ArXiv] ViRA | [Raporu Oku](reports/2026/11/2026-11-17-daily-brief.md) |
 | 2026-11-16 | Alibaba Releases Qwen4-Max, Meet Meta’s JiTTests | [Raporu Oku](reports/2026/11/2026-11-16-daily-brief.md) |
 | 2026-11-15 | Cmpnd Releases dspy-wsp | [Raporu Oku](reports/2026/11/2026-11-15-daily-brief.md) |
